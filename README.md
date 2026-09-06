@@ -22,9 +22,9 @@ cells are null, as expected when there is no imbalance to correct.
 
 Two methodological findings:
 
-1. **Single-seed benchmarks understate uncertainty by roughly 60x.** Median
-   model-seed interval width is 0.0004; median test-set bootstrap interval
-   width is 0.0250. At this test-set size model ranking is unresolvable —
+1.  **Single-seed benchmarks understate uncertainty by roughly 28x.** Median
+   model-seed interval width is 0.0009; median test-set bootstrap interval
+   width is 0.0250. At this test-set size model ranking is unresolvable — —
    20 to 22 of 30 cells overlap the best cell's confidence interval.
 2. **Threshold calibration explains the apparent value of rebalancing.** At
    1:50, tuning the decision threshold on validation lifts baseline F1 from
