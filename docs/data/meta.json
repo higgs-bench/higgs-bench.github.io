@@ -1,0 +1,53 @@
+{
+  "n_runs": 450,
+  "n_cells": 90,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "versions": [
+    {
+      "id": "A",
+      "label": "1:1",
+      "prevalence": 0.5,
+      "n_test": 80000
+    },
+    {
+      "id": "B",
+      "label": "1:10",
+      "prevalence": 0.0909090909090909,
+      "n_test": 44000
+    },
+    {
+      "id": "C",
+      "label": "1:50",
+      "prevalence": 0.0196078431372549,
+      "n_test": 40800
+    }
+  ],
+  "models": [
+    "adaboost",
+    "catboost",
+    "lightgbm",
+    "random_forest",
+    "voting_3",
+    "voting_4",
+    "xgboost"
+  ],
+  "techniques": [
+    "baseline",
+    "class_weight",
+    "focal",
+    "smote",
+    "undersample"
+  ],
+  "median_seed_ci_width": 0.000878,
+  "median_boot_ci_width": 0.024983,
+  "n_sig_help": 1,
+  "n_sig_hurt": 37,
+  "n_cells_imbalanced": 46,
+  "uncertainty_ratio": 28.5
+}
