@@ -1,0 +1,15 @@
+numpy==1.26.4
+pandas==2.2.2
+pyarrow==17.0.0
+scikit-learn==1.5.1
+xgboost==2.1.1
+lightgbm==4.5.0
+catboost==1.2.7
+imbalanced-learn==0.12.3
+matplotlib==3.9.2
+seaborn==0.13.2
+pyyaml==6.0.2
+tqdm==4.66.5
+jupyterlab==4.2.5
+ipykernel==6.29.5
+pytest==8.3.2

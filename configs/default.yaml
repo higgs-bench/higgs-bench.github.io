@@ -1,0 +1,19 @@
+paths:
+  raw_csv: "C:/higgs_data/HIGGS.csv"
+  data_dir: "data"
+  results_dir: "results"
+  figures_dir: "figures"
+
+data:
+  seed: 20260905          # data seed. NEVER change after first build.
+  n_background: 200000
+  n_signal: 200000
+  split:
+    train: 0.60
+    val: 0.20
+    test: 0.20
+  chunksize: 500000
+  versions:
+    A: 1                  # bg:sig ratio
+    B: 10
+    C: 50

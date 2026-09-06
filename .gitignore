@@ -1,0 +1,12 @@
+venv/
+data/
+*.csv
+*.parquet
+*.npy
+*.pkl
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
+*.egg-info/
+.vscode/
+catboost_info/
