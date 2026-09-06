@@ -5,6 +5,8 @@ boson dataset? Across 450 runs (7 models x 5 techniques x 3 imbalance ratios
 x 5 seeds), **no technique produced a significant improvement, and most
 produced significant harm.**
 
+**Interactive results:** https://rudraindia.github.io/higgs-imbalance-benchmark/
+
 ## Headline results
 
 Change in AUPRC vs an untreated baseline, same model and same test set.
@@ -78,6 +80,18 @@ compared against Z >= 5 anywhere in this work. See `src/higgs_bench/metrics.py`.
     scripts/                    sweep, compilation, bootstrap, figures
     tests/                      32 tests including a finite-difference
                                 check on the focal-loss gradient
+
+
+
+## Rebuilding the site
+
+    cd web
+    npm install
+    npm run dev      # local development
+    npm run build    # writes to ../docs, which GitHub Pages serves
+
+
+
 
 ## Authors
 
