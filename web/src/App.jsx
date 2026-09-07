@@ -163,6 +163,7 @@ export default function App() {
           <a href="https://archive.ics.uci.edu/dataset/280/higgs">
             HIGGS dataset
           </a>
+          <a href="/summary.html">Text-only summary</a>
         </div>
       </footer>
     </>
