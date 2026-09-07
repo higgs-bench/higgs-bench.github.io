@@ -5,7 +5,12 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Does fixing class imbalance actually help?</title>
-    <meta name="description" content="450 runs on the HIGGS boson dataset testing whether class-imbalance techniques improve classifier ranking." />
+    <meta name="description" content="450 experiments on the HIGGS boson dataset. No class-imbalance technique beat an untreated baseline once the decision threshold was tuned on held-out data." />
+    <meta property="og:title" content="Does fixing class imbalance actually help?" />
+    <meta property="og:description" content="450 experiments across 7 classifiers, 5 techniques and 3 imbalance ratios. One significant improvement, 37 significant losses." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://higgs-bench.github.io/" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -14,5 +19,99 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Does fixing class imbalance actually help? Five techniques, 450 experiments, no.</h1>
+
+      <p>This page normally renders an interactive results explorer, which requires
+      JavaScript. The summary below covers the same findings in plain text.</p>
+
+      <h2>What was tested</h2>
+      <p>Seven classifiers (XGBoost, LightGBM, Random Forest, CatBoost, AdaBoost, and
+      two voting ensembles) were combined with five approaches to class imbalance:
+      an untreated baseline, class weighting, SMOTE, random undersampling, and focal
+      loss. Each combination was run at three signal-to-background ratios (1:1, 1:10
+      and 1:50) with five random seeds, giving 450 experiments. Focal loss applies
+      only to XGBoost and LightGBM, so the grid is ragged rather than a full
+      rectangle: 30 valid combinations per ratio.</p>
+
+      <p>Data came from the HIGGS dataset in the UCI Machine Learning Repository:
+      11 million simulated proton collision events with 28 features. A fixed pool of
+      200,000 background and 200,000 signal events was split 60/20/20 into training,
+      validation and test. Rarer ratios were created by truncating the signal class,
+      so background rows are identical across all three versions and the splits nest.
+      Test sets remain imbalanced.</p>
+
+      <h2>Finding one: no technique beat doing nothing</h2>
+      <p>Across 46 technique-versus-baseline comparisons on imbalanced data there was
+      one statistically significant improvement and 37 significant losses. SMOTE was
+      worse than the untreated baseline in 7 of 7 classifiers at both 1:10 and 1:50
+      (sign test p = 0.016), costing 0.067 of AUPRC at 1:10 against a baseline of
+      0.375. Random undersampling was worse in 7 of 7 at both ratios. Class weighting
+      was worse in 7 of 7 at 1:50. Focal loss showed no detectable effect either way.</p>
+
+      <p>In the balanced 1:1 control, 22 of 23 comparisons show no detectable effect,
+      which is the expected result: with equal classes, class weighting computes a
+      weight of 1.0 and SMOTE has nothing to synthesise.</p>
+
+      <h2>Finding two: the decision threshold explains the apparent benefit</h2>
+      <p>At the 1:50 ratio, an untreated model scores 0.006 on F1 with the decision
+      threshold left at the default of 0.5, and 0.169 once that threshold is tuned on
+      a held-out validation split. Nothing about the model changes; only the cut-off
+      moves.</p>
+
+      <p>Measured at a fixed threshold of 0.5, class weighting appears to turn 0.006
+      into 0.126 and looks transformative. Measured at a tuned threshold, the same
+      technique scores 0.155 against the untreated baseline's 0.169, and the ordering
+      reverses. These techniques shift the model's output probabilities so that a
+      fixed cut lands in a better place; they do not improve how the model ranks
+      events. Tuning the threshold achieves the repositioning directly, and once you
+      do that the techniques have nothing left to contribute.</p>
+
+      <h2>Finding three: seed-based error bars understate uncertainty by 28.5 times</h2>
+      <p>Repeating a run with a different random seed measures how stable the training
+      algorithm is; several of these models are deterministic, so their seed-to-seed
+      variation is exactly zero. The median width of a seed-based interval across all
+      cells is 0.00088. Resampling the test set instead measures how much of a score
+      is an accident of which events landed in the test file; the median width of a
+      2,000-replicate stratified bootstrap interval is 0.02498, which is 28.5 times
+      wider.</p>
+
+      <p>Under bootstrap intervals the model ranking is unresolvable: at 1:50 the
+      leading cell is a four-way voting ensemble at 0.1061, and 20 of 30 cells have
+      intervals overlapping it. A benchmark table declaring a winner at this test-set
+      size is reporting noise.</p>
+
+      <h2>Method notes</h2>
+      <p>AUPRC is the primary metric, always reported against the prevalence floor,
+      because a random classifier scores exactly the prevalence: 0.5000 at 1:1,
+      0.0909 at 1:10 and 0.0196 at 1:50. AUC-ROC is recorded but is optimistic under
+      imbalance, since the enormous true-negative count keeps the false positive rate
+      small even when false alarms outnumber true detections. Accuracy is excluded
+      entirely: at 1:50 a model predicting the majority class for every input scores
+      98 percent.</p>
+
+      <p>Confidence intervals come from 2,000 stratified bootstrap resamples of the
+      test set. For technique comparisons the same resample index is applied to the
+      technique and to its baseline, so the interval sits on the difference itself.
+      Statistical significance uses a sign test across the seven classifiers, which
+      bottoms out at p = 0.016 when all seven agree; a test across five seeds could
+      never reach p below 0.05 and would measure the wrong thing.</p>
+
+      <p>The quantity Z = TP/sqrt(TP+FP) appears in the run data for continuity with
+      earlier work, but it grows with the square root of test-set size while
+      classifier quality stays constant. It is not a discovery significance and is
+      not compared against the five-sigma threshold used in particle physics.</p>
+
+      <h2>Limitations</h2>
+      <p>This covers one tabular dataset with 28 numerical features and heavily
+      overlapping classes. The imbalance is constructed by discarding signal events,
+      so the rare class is a random subsample of a well-populated class rather than
+      genuinely scarce data. All seven classifiers are tree ensembles, hyperparameters
+      are fixed rather than tuned, and thresholds are optimised for F1 specifically.</p>
+
+      <h2>Source</h2>
+      <p>Code, cached predictions, result files and a 29-page project guide are at
+      https://github.com/higgs-bench/higgs-bench.github.io</p>
+    </noscript>
   </body>
 </html>
