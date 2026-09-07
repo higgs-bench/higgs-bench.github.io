@@ -157,7 +157,7 @@ export default function App() {
           All code, cached predictions and result files are in the repository.
         </p>
         <div className="footer-links">
-          <a href="https://github.com/RUDRAIndia/higgs-imbalance-benchmark">
+          <a href="https://github.com/higgs-bench/higgs-bench.github.io">
             Source and data
           </a>
           <a href="https://archive.ics.uci.edu/dataset/280/higgs">

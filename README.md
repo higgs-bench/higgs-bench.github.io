@@ -5,7 +5,7 @@ boson dataset? Across 450 runs (7 models x 5 techniques x 3 imbalance ratios
 x 5 seeds), **no technique produced a significant improvement, and most
 produced significant harm.**
 
-**Interactive results:** https://rudraindia.github.io/higgs-imbalance-benchmark/
+**Interactive results:** https://higgs-bench.github.io/
 
 ## Headline results
 
